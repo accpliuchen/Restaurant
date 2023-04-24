@@ -11,12 +11,14 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.Locale;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Table implements Serializable {
 	private int tableId;
 	private int numbers;
+
+	private ConcurrentHashMap timeslot;
 
 	public int getTableId() {
 		return tableId;
@@ -34,8 +36,13 @@ public class Table implements Serializable {
 		this.numbers = numbers;
 	}
 
-	//private HashSet<Slot> timeslot;
+	public ConcurrentHashMap getTimeslot() {
+		return timeslot;
+	}
 
+	public void setTimeslot(ConcurrentHashMap timeslot) {
+		this.timeslot = timeslot;
+	}
 
 	public static void main(String args[]) throws ParseException {
 //		String startTime="9:30";
