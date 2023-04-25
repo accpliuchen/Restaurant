@@ -85,6 +85,8 @@ public class ReservationController {
 
     @RequestMapping(value = "/bookRequest", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<String> bookRequest(@RequestParam String userId,@RequestParam int numbers,@RequestParam String slot,@RequestParam int duration) {
+
+
         return ResponseEntity.ok("bookRequest Hello World!"+numbers);
     }
 
