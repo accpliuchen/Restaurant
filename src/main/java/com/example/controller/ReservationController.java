@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.domain.Table;
+import com.example.domain.Table;
 import com.example.domain.Tutorial;
 import com.example.repository.TutorialRepository;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -35,39 +37,7 @@ public class ReservationController {
 
     public ReservationController(){
         Table table=new Table();
-        table.setTableId(1);
-        table.setNumbers(2);
-
-        ConcurrentHashMap<String, String> timesLots = new ConcurrentHashMap<>();
-        timesLots.put("9:00am","A");
-        timesLots.put("9:15am","B");
-        timesLots.put("9:30am","");
-        timesLots.put("9:45am","");
-        timesLots.put("10:00am","");
-        timesLots.put("10:15am","");
-        timesLots.put("10:30am","");
-        timesLots.put("10:45am","");
-        timesLots.put("11:00am","");
-        timesLots.put("11:15am","");
-        timesLots.put("11:30am","");
-        timesLots.put("11:45am","");
-        timesLots.put("12:00pm","");
-        
-
-        table.setTimeslot(timesLots);
-        tableList.add(table);
-
-        table.setTableId(2);
-        table.setNumbers(2);
-        tableList.add(table);
-
-        table.setTableId(3);
-        table.setNumbers(4);
-        tableList.add(table);
-
-        table.setTableId(4);
-        table.setNumbers(6);
-        tableList.add(table);
+        tableList=table.init();
     }
 
     @RequestMapping(value = "/getAvailableSlots", method = { RequestMethod.GET, RequestMethod.POST })

@@ -1,27 +1,47 @@
 package com.example.domain;
 
-import java.io.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
-import java.text.ParseException;
+import java.io.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+class Entry{
+	private String key;
+	private String value;
+
+
+	public Entry(String key,String value){
+		this.key=key;
+		this.value=value;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+}
+
 public class Table implements Serializable {
 
-	private int tableId;
 	private int numbers;
 
 	private Map timeslot;
-
-	public int getTableId() {
-		return tableId;
-	}
-
-	public void setTableId(int tableId) {
-		this.tableId = tableId;
-	}
 
 	public int getNumbers() {
 		return numbers;
@@ -39,255 +59,306 @@ public class Table implements Serializable {
 		this.timeslot = timeslot;
 	}
 
-	public static void main(String args[]) throws ParseException {
-//		String startTime="9:30";
-//		String endTime="10:30pm";
-//
-////		String beginTime = "2018-07-28 14:42:32";
-////
-////		String endTime = "2018-07-29 12:26:32";
-//
-////		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//
-//		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-//
-////		SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
-////		Date startDate=sdf.parse(sdformat.format(new Date())+" " +startTime);
-////		Date endDate=sdf.parse(sdformat.format(new Date())+" "+ endTime);
-//
-//
-//		//System.out.println(DateUtil.between(startDate,endDate, DateUnit.HOUR));
-//
-//		Date now = new Date();
-//
-//		Date afterDate = new Date(now.getTime() + 300000);
-//		System.out.println(sdf.format(afterDate ));
-//
-////	    if(startDate.before(endDate) && endDate.after(startDate)){
-////	    	System.out.println("Over");
-////	    }
+	public  List<Table> init(){
+		List<Table> tableList = new ArrayList<Table>();
+
+		Map<Entry, Integer> timeslots;
+
+		Table table_one=new Table();
+		table_one.setNumbers(2);
+
+		timeslots = new ConcurrentHashMap<Entry,Integer>();
+		timeslots.put(new Entry("9:00am",""),0);
+		timeslots.put(new Entry("9:15am",""),1);
+		timeslots.put(new Entry("9:30am",""),2);
+		timeslots.put(new Entry("9:45am",""),3);
+		timeslots.put(new Entry("10:00am",""),4);
+		timeslots.put(new Entry("10:15am",""),5);
+		timeslots.put(new Entry("10:30am",""),6);
+		timeslots.put(new Entry("10:45am",""),7);
+		timeslots.put(new Entry("11:00am",""),8);
+		timeslots.put(new Entry("11:15am",""),9);
+		timeslots.put(new Entry("11:30am",""),10);
+		timeslots.put(new Entry("11:45am",""),11);
+		timeslots.put(new Entry("12:00pm",""),12);
+
+		table_one.setTimeslot(timeslots);
+		tableList.add(table_one);
 
 
-//		Date date = DateUtil.date();
-//		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");// 设置日期格式
-//		Date now = new Date();
-//		String today = sdf1.format(now);
-//		String startTime = "9:30am";
-//		String endTime = "1:30am";
-//		String beginDate = today + " " + startTime;
-//		String endDate = today + " " + endTime;
-//		String strDateFormat = "dd-MM-yyyy hh:mmaa";
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		try {
-//			Date date1 = new SimpleDateFormat(strDateFormat, Locale.ENGLISH).parse(beginDate);
-//			Date date2 = new SimpleDateFormat(strDateFormat, Locale.ENGLISH).parse(endDate);
-//			long between = DateUtil.between(date1, date2, DateUnit.HOUR);
-//			System.out.println(between + "");
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println("===");
+
+		System.out.println("===========================");
+
+		Table table_two=new Table();
+		table_two.setNumbers(2);
+
+		timeslots = new ConcurrentHashMap<Entry,Integer>();
+		timeslots.put(new Entry("9:00am",""),0);
+		timeslots.put(new Entry("9:15am",""),1);
+		timeslots.put(new Entry("9:30am",""),2);
+		timeslots.put(new Entry("9:45am",""),3);
+		timeslots.put(new Entry("10:00am",""),4);
+		timeslots.put(new Entry("10:15am",""),5);
+		timeslots.put(new Entry("10:30am",""),6);
+		timeslots.put(new Entry("10:45am",""),7);
+		timeslots.put(new Entry("11:00am",""),8);
+		timeslots.put(new Entry("11:15am",""),9);
+		timeslots.put(new Entry("11:30am",""),10);
+		timeslots.put(new Entry("11:45am",""),11);
+		timeslots.put(new Entry("12:00pm",""),12);
+
+		table_two.setTimeslot(timeslots);
+		tableList.add(table_two);
+
+		System.out.println("===========================");
+
+
+		Table table_three=new Table();
+		table_three.setNumbers(4);
+
+		timeslots = new ConcurrentHashMap<Entry,Integer>();
+		timeslots.put(new Entry("9:00am",""),0);
+		timeslots.put(new Entry("9:15am",""),1);
+		timeslots.put(new Entry("9:30am",""),2);
+		timeslots.put(new Entry("9:45am",""),3);
+		timeslots.put(new Entry("10:00am",""),4);
+		timeslots.put(new Entry("10:15am",""),5);
+		timeslots.put(new Entry("10:30am",""),6);
+		timeslots.put(new Entry("10:45am",""),7);
+		timeslots.put(new Entry("11:00am",""),8);
+		timeslots.put(new Entry("11:15am",""),9);
+		timeslots.put(new Entry("11:30am",""),10);
+		timeslots.put(new Entry("11:45am",""),11);
+		timeslots.put(new Entry("12:00pm",""),12);
+		table_three.setTimeslot(timeslots);
+		tableList.add(table_three);
+
+		System.out.println("===========================");
+
+
+		Table table_four=new Table();
+		table_four.setNumbers(6);
+
+		timeslots = new ConcurrentHashMap<Entry,Integer>();
+		timeslots.put(new Entry("9:00am",""),0);
+		timeslots.put(new Entry("9:15am",""),1);
+		timeslots.put(new Entry("9:30am",""),2);
+		timeslots.put(new Entry("9:45am",""),3);
+		timeslots.put(new Entry("10:00am",""),4);
+		timeslots.put(new Entry("10:15am",""),5);
+		timeslots.put(new Entry("10:30am",""),6);
+		timeslots.put(new Entry("10:45am",""),7);
+		timeslots.put(new Entry("11:00am",""),8);
+		timeslots.put(new Entry("11:15am",""),9);
+		timeslots.put(new Entry("11:30am",""),10);
+		timeslots.put(new Entry("11:45am",""),11);
+		timeslots.put(new Entry("12:00pm",""),12);
+		table_four.setTimeslot(timeslots);
+		tableList.add(table_four);
+
+		return tableList;
+
+	}
+	public static void main(String args[]) {
 
 		List<Table> tableList = new ArrayList<Table>();
 
-		Map<String, Integer> timeslots;
+		Map<String, String> timeslots;
 
-		Table table=new Table();
-		table.setTableId(1);
-		table.setNumbers(2);
+		Table table_one=new Table();
+		table_one.setNumbers(2);
 
-		Map<String, String> timesLots = new ConcurrentHashMap<String,String>();
-		timesLots.put("9:00am","");
-		timesLots.put("9:15am","");
-		timesLots.put("9:30am","");
-		timesLots.put("9:45am","");
-		timesLots.put("10:00am","");
-		timesLots.put("10:15am","");
-		timesLots.put("10:30am","");
-		timesLots.put("10:45am","");
-		timesLots.put("11:00am","");
-		timesLots.put("11:15am","");
-		timesLots.put("11:30am","");
-		timesLots.put("11:45am","");
-		timesLots.put("12:00pm","");
-
-
-		table.setTimeslot(timesLots);
-		tableList.add(table);
-
-		table=new Table();
-
-		table.setTableId(2);
-		table.setNumbers(2);
-
-		timesLots = new ConcurrentHashMap<String,String>();
-		timesLots.put("9:00am","");
-		timesLots.put("9:15am","");
-		timesLots.put("9:30am","");
-		timesLots.put("9:45am","");
-		timesLots.put("10:00am","");
-		timesLots.put("10:15am","");
-		timesLots.put("10:30am","");
-		timesLots.put("10:45am","");
-		timesLots.put("11:00am","");
-		timesLots.put("11:15am","");
-		timesLots.put("11:30am","");
-		timesLots.put("11:45am","");
-		timesLots.put("12:00pm","");
+		timeslots = new ConcurrentHashMap<String, String>();
+//		timeslots.put(new Entry("9:00am",""),0);
+//		timeslots.put(new Entry("9:15am",""),1);
+//		timeslots.put(new Entry("9:30am",""),2);
+//		timeslots.put(new Entry("9:45am",""),3);
+//		timeslots.put(new Entry("10:00am",""),4);
+//		timeslots.put(new Entry("10:15am",""),5);
+//		timeslots.put(new Entry("10:30am",""),6);
+//		timeslots.put(new Entry("10:45am",""),7);
+//		timeslots.put(new Entry("11:00am",""),8);
+//		timeslots.put(new Entry("11:15am",""),9);
+//		timeslots.put(new Entry("11:30am",""),10);
+//		timeslots.put(new Entry("11:45am",""),11);
+//		timeslots.put(new Entry("12:00pm",""),12);
 
 
-		table.setTimeslot(timesLots);
+		timeslots.put("9:00","");
+		timeslots.put("9:15","");
+		timeslots.put("9:30","");
+		timeslots.put("9:45","");
+		timeslots.put("10:00","");
+		timeslots.put("10:15","");
+		timeslots.put("10:30","");
+		timeslots.put("10:45","");
+		timeslots.put("11:00","");
+		timeslots.put("11:15","");
+		timeslots.put("11:30","");
+		timeslots.put("11:45","");
+		timeslots.put("12:00","");
 
-		tableList.add(table);
-
-		table=new Table();
-		table.setTableId(3);
-		table.setNumbers(4);
-
-		timeslots = new ConcurrentHashMap<String,Integer>();
-		timeslots.put("9:00am",0);
-		timeslots.put("9:15am",1);
-		timeslots.put("9:30am",2);
-		timeslots.put("9:45am",3);
-		timeslots.put("10:00am",4);
-		timeslots.put("10:15am",5);
-		timeslots.put("10:30am",6);
-		timeslots.put("10:45am",7);
-		timeslots.put("11:00am",8);
-		timeslots.put("11:15am",9);
-		timeslots.put("11:30am",10);
-		timeslots.put("11:45am",11);
-		timeslots.put("12:00pm",12);
+		table_one.setTimeslot(timeslots);
+		tableList.add(table_one);
 
 
-//		List<String> values = new ArrayList<>(timeslots.keySet());
-//		Collections.sort(values, new Comparator<String>() {
-//			public int compare(String a, String b) {
-//				// no need to worry about nulls as we know a and b are both in pl
-//				return timeslots.get(a) - timeslots.get(b);
-//			}
-//		});
+
+//		System.out.println("===========================");
 //
-//		for(String val : values) {
-//			System.out.println(val + "," + timeslots.get(val));
-//		}
-
-		table.setTimeslot(timeslots);
-		tableList.add(table);
-
-		table=new Table();
-		table.setTableId(4);
-		table.setNumbers(6);
-
-		timesLots = new ConcurrentHashMap<String,String>();
-		timesLots.put("9:00am","");
-		timesLots.put("9:15am","");
-		timesLots.put("9:30am","");
-		timesLots.put("9:45am","");
-		timesLots.put("10:00am","");
-		timesLots.put("10:15am","");
-		timesLots.put("10:30am","");
-		timesLots.put("10:45am","");
-		timesLots.put("11:00am","");
-		timesLots.put("11:15am","");
-		timesLots.put("11:30am","");
-		timesLots.put("11:45am","");
-		timesLots.put("12:00pm","");
-
-
-		table.setTimeslot(timesLots);
-		tableList.add(table);
-
-//		for (int i = 0; i < tableList.size(); i++) {
-//			for (Object key : tableList.get(3).getTimeslot().keySet()) {
-//				if(timesLots.get(key).equals(""))
-//					System.out.println(key + " : " + timesLots.get(key));
-//			}
+//		Table table_two=new Table();
+//		table_two.setNumbers(2);
 //
-//			System.out.println("===");
-//		}
-		Table tables=new Table();
-		tables.setNumbers(3);
-		String slot="9:30am";
-		int duration=60;
+//		timeslots = new ConcurrentHashMap<Entry,Integer>();
+//		timeslots.put(new Entry("9:00am",""),0);
+//		timeslots.put(new Entry("9:15am",""),1);
+//		timeslots.put(new Entry("9:30am",""),2);
+//		timeslots.put(new Entry("9:45am",""),3);
+//		timeslots.put(new Entry("10:00am",""),4);
+//		timeslots.put(new Entry("10:15am",""),5);
+//		timeslots.put(new Entry("10:30am",""),6);
+//		timeslots.put(new Entry("10:45am",""),7);
+//		timeslots.put(new Entry("11:00am",""),8);
+//		timeslots.put(new Entry("11:15am",""),9);
+//		timeslots.put(new Entry("11:30am",""),10);
+//		timeslots.put(new Entry("11:45am",""),11);
+//		timeslots.put(new Entry("12:00pm",""),12);
+//
+//		table_two.setTimeslot(timeslots);
+//		tableList.add(table_two);
+//
+//		System.out.println("===========================");
+//
+//
+//		Table table_three=new Table();
+//		table_three.setNumbers(4);
+//
+//		timeslots = new ConcurrentHashMap<Entry,Integer>();
+//		timeslots.put(new Entry("9:00am",""),0);
+//		timeslots.put(new Entry("9:15am",""),1);
+//		timeslots.put(new Entry("9:30am",""),2);
+//		timeslots.put(new Entry("9:45am",""),3);
+//		timeslots.put(new Entry("10:00am",""),4);
+//		timeslots.put(new Entry("10:15am",""),5);
+//		timeslots.put(new Entry("10:30am",""),6);
+//		timeslots.put(new Entry("10:45am",""),7);
+//		timeslots.put(new Entry("11:00am",""),8);
+//		timeslots.put(new Entry("11:15am",""),9);
+//		timeslots.put(new Entry("11:30am",""),10);
+//		timeslots.put(new Entry("11:45am",""),11);
+//		timeslots.put(new Entry("12:00pm",""),12);
+//		table_three.setTimeslot(timeslots);
+//		tableList.add(table_three);
+//
+//		System.out.println("===========================");
+//
+//
+//		Table table_four=new Table();
+//		table_four.setNumbers(6);
+//
+//		timeslots = new ConcurrentHashMap<Entry,Integer>();
+//		timeslots.put(new Entry("9:00am",""),0);
+//		timeslots.put(new Entry("9:15am",""),1);
+//		timeslots.put(new Entry("9:30am",""),2);
+//		timeslots.put(new Entry("9:45am",""),3);
+//		timeslots.put(new Entry("10:00am",""),4);
+//		timeslots.put(new Entry("10:15am",""),5);
+//		timeslots.put(new Entry("10:30am",""),6);
+//		timeslots.put(new Entry("10:45am",""),7);
+//		timeslots.put(new Entry("11:00am",""),8);
+//		timeslots.put(new Entry("11:15am",""),9);
+//		timeslots.put(new Entry("11:30am",""),10);
+//		timeslots.put(new Entry("11:45am",""),11);
+//		timeslots.put(new Entry("12:00pm",""),12);
+//		table_four.setTimeslot(timeslots);
+//		tableList.add(table_four);
 
 
+		ObjectMapper objectMapper = new ObjectMapper();
 
-		//System.out.println(checkAvailableTable(tableList,tables,slot,duration,"A"));
+		try {
+//			String json = objectMapper.writeValueAsString(tableList);
+//			System.out.println(json);
 
-		System.out.println(setAvailableTable(timeslots,slot,duration,"A"));
+
+			Gson gson = new Gson();
+			String json = gson.toJson(tableList);
+			System.out.println(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		System.out.println("===========&&&&&&================");
+
+		Table table_demo;
+		table_demo=new Table();
+		table_demo.setNumbers(3);
+		System.out.println("==============1============"+checkAvailableTable(tableList,table_demo));
+		System.out.println("==============one============"+setAvailableTable(tableList,"9:30am", 60/15,"A"));
+
+		table_demo.setNumbers(2);
+		System.out.println("==============2============"+checkAvailableTable(tableList,table_demo));
+
+		table_demo.setNumbers(7);
+		System.out.println("==============3============"+checkAvailableTable(tableList,table_demo));
+
+
+		table_demo.setNumbers(2);
+		System.out.println("==============4============"+checkAvailableTable(tableList,table_demo));
+
+		System.out.println("===========================");
 	}
 
-
-//	public static  boolean checkAvailableTable(List<Table> tableList,Table table,String slot,int duration,String userId){
-//		for (int i = tableList.size()-1; i >=0 ; i--) {
-//			Table tEntitty=tableList.get(2);
-//			for (Object key : tableList.get(i).getTimeslot().keySet()) {
-//				//
-//				if (!tableList.get(i).getTimeslot().get(key).equals("")  || Math.abs(table.getNumbers()-tEntitty.getNumbers())<=1) {
-//					return false;
-//				}else if (key.equals(slot)){
-//					while(duration>=0){
-//						System.out.println("key "+ key+" value "+tableList.get(i).getTimeslot().get(key));
-//						tableList.get(i).getTimeslot().put(key,userId);
-//						duration=duration-15;
-//					}
-//				}
-//
-//			}
-//		}
-//		return true;
-//	}
-
-	public static  boolean checkAvailableTable(List<Table> tableList,Table table,String slot,int duration,String userId){
-		int pivot=duration/15;
+	public static  boolean checkAvailableTable(List<Table> tableList,Table table){
 
 		for (int i = 0; i <tableList.size(); i++) {
-
 			Table tEntitty=tableList.get(i);
 
-			if(tEntitty.numbers>table.getNumbers()){
-				//System.out.println(tEntitty.numbers);
-				for (Object key : tableList.get(i).getTimeslot().keySet()){
-					if(pivot!=0){
-//						if (key.equals(slot)){
-//							pivot=duration/15;
-//						}
-
-
-						pivot--;
-
-					}
-				}
-
+			if(tEntitty.numbers>table.getNumbers()) {
+			    return true;
 			}
-
 		}
 		return false;
 	}
 
 
-	public static boolean setAvailableTable(Map<String, Integer> timeslots,String slot,int duration,String userId){
+	public static boolean setAvailableTable(List<Table> tableList,String slot,int times,String userId){
 
-		List<String> values = new ArrayList<>(timeslots.keySet());
-		Collections.sort(values, new Comparator<String>() {
-			public int compare(String a, String b) {
-				// no need to worry about nulls as we know a and b are both in pl
-				return timeslots.get(a) - timeslots.get(b);
+		for (int i = 0; i <tableList.size(); i++) {
+
+			List<Map.Entry<String, String>> list =
+					new LinkedList<Map.Entry<String, String>>(tableList.get(i).getTimeslot().entrySet());
+			boolean flag = false;
+
+			// Sort the list
+			Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
+				public int compare(Map.Entry<String, String> o1,
+								   Map.Entry<String, String> o2) {
+					return (o1.getKey()).compareTo(o2.getKey());
+				}
+			});
+
+			// put data from sorted list to hashmap
+			HashMap<String, String> temp = new LinkedHashMap<String, String>();
+			for (Map.Entry<String, String> entry : list) {
+
+				//System.out.println(aa.getKey().getKey());
+				if (entry.getKey().equals(slot)) {
+					//System.out.println("find =="+entry.getKey().getKey()+"=="+ entry.getKey().getKey().equals(slot));
+					entry.setValue(userId);
+					flag = true;
+					times--;
+				} else if (flag && times != 0) {
+					//System.out.println("duration==="+entry.getKey().getKey());
+					entry.setValue(userId);
+					times--;
+					if (times == 0) flag = false;
+				}
+
+				temp.put(entry.getKey(), entry.getValue());
 			}
-		});
 
-
-//		for(String val : values) {
-//			if(val.equals(slot)) {
-//				//while(duration>=0) {
-//					System.out.println(val + "," + val+userId);
-//					timeslots.put(val,timeslots.get(val)+userId);
-//					duration=duration-15;
-//				//}
-//			}
-//		}
-
+		}
 		return true;
 	}
 }
