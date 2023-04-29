@@ -40,7 +40,9 @@ public class ReservationController {
 
     @RequestMapping(value = "/getBookedTimeSlots", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<String> getBookedTimeSlots() {
-        return new ResponseEntity(tableList, HttpStatus.OK);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String json = gson.toJson(tableList);
+        return new ResponseEntity(json, HttpStatus.OK);
     }
 
 
