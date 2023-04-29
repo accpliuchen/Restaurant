@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.domain.Table;
 import com.example.repository.TutorialRepository;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ReservationController {
 
     @RequestMapping(value = "/getAvailableSlots", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<String> getAvailableSlots() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(tableList);
         return new ResponseEntity(json, HttpStatus.OK);
     }

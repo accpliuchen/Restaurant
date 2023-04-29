@@ -1,5 +1,7 @@
 package com.example.domain;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 import java.util.List;
@@ -7,9 +9,16 @@ import java.util.ArrayList;
 
 public class Table implements Serializable {
 
+	@Expose (serialize = true, deserialize = false)
 	private int numbers;
+
+	@Expose (serialize = true, deserialize = false)
 	private int tableId;
+
+	@Expose (serialize = true, deserialize = false)
 	private String[] timeslots=new String[]{"9:00am","9:15am","9:30am","9:45am","10:00am","10:15am","10:30am","10:45am","11:00am","11:15am","11:30am","11:45am","12:00pm"};
+
+
 	private boolean booked;
 
 	public String[] getTimeslots() {
