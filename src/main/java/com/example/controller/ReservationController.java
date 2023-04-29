@@ -4,6 +4,7 @@ import com.example.domain.Table;
 import com.example.domain.Table;
 import com.example.domain.Tutorial;
 import com.example.repository.TutorialRepository;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,9 @@ public class ReservationController {
 
     @RequestMapping(value = "/getAvailableSlots", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<String> getAvailableSlots() {
-//        tutorialRepository.save(new Tutorial("aaa", "cccc", false));
-        return new ResponseEntity(tableList, HttpStatus.OK);
+        Gson gson = new Gson();
+        String json = gson.toJson(tableList);
+        return new ResponseEntity(json, HttpStatus.OK);
     }
 
 
@@ -55,14 +57,16 @@ public class ReservationController {
 
     @RequestMapping(value = "/bookRequest", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<String> bookRequest(@RequestParam String userId,@RequestParam int numbers,@RequestParam String slot,@RequestParam int duration) {
+        Table table=new Table();
+        table.setNumbers(numbers);
+        boolean result=table.checkAvailableTable(tableList,table);
 
-
-        return ResponseEntity.ok("bookRequest Hello World!"+numbers);
+        if(result){
+            int dur=60/15;
+            boolean isAvailable=table.setAvailableTable(tableList,slot,dur ,userId,table);
+            return new ResponseEntity(isAvailable, HttpStatus.OK);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
-
-//    @RequestMapping(value = "/getAvailableSlots", method = { RequestMethod.GET, RequestMethod.POST })
-//    public ResponseEntity<String> getAvailableSlots(@RequestParam("durationInMinutes") int durationInMinutes) {
-//        return ResponseEntity.ok("Hello World!");
-//    }
 }
