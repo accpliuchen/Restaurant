@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -85,8 +86,32 @@ public class Table implements Serializable {
 		return tableList;
 
 	}
-	public static void main(String args[]) {
+//	public static void main(String args[]) {
+//
+//		
+//	}
 
+	public static List getBookedTimeSlots(List<Table> tableList){
+
+		for (int i = 0; i <tableList.size(); i++) {
+			Table table_value = tableList.get(i);
+			String[] timeslots = table_value.getTimeslots();
+			for (int j = 0; j <= timeslots.length - 1; j++) {
+				if (timeslots[j].split(":").length < 3) {
+					timeslots[j] = timeslots[j].substring(0);
+
+				} else {
+					timeslots[j] = "";
+				}
+				timeslots = Arrays.stream(timeslots)
+						.filter(s -> s != null && s.length() > 0)
+						.toArray(String[]::new);
+
+				table_value.setTimeslots(timeslots);
+			}
+		}
+
+		return tableList;
 	}
 
 	/**

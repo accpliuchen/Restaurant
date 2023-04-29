@@ -22,6 +22,8 @@ public class ReservationController {
 
     private List<Table> tableList = new ArrayList<Table>();
 
+    private static final int  quarter=15;
+
     @Autowired
     private TutorialRepository tutorialRepository;
 
@@ -40,8 +42,10 @@ public class ReservationController {
 
     @RequestMapping(value = "/getBookedTimeSlots", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<String> getBookedTimeSlots() {
+        Table table=new Table();
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(tableList);
+        List result=table.getBookedTimeSlots(tableList);
+        String json = gson.toJson(result);
         return new ResponseEntity(json, HttpStatus.OK);
     }
 
@@ -53,7 +57,7 @@ public class ReservationController {
         boolean result=table.checkAvailableTable(tableList,table);
 
         if(result){
-            int dur=60/15;
+            int dur=duration/quarter;
             boolean isAvailable=table.setAvailableTable(tableList,slot,dur ,userId,table);
             return new ResponseEntity(isAvailable, HttpStatus.OK);
         }
