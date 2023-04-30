@@ -91,23 +91,30 @@ public class Table implements Serializable {
 //		
 //	}
 
+	/**
+	 * *
+	 * @param tableList
+	 * @return
+	 */
 	public static List getBookedTimeSlots(List<Table> tableList){
 
-		for (int i = 0; i <tableList.size(); i++) {
-			Table table_value = tableList.get(i);
-			String[] timeslots = table_value.getTimeslots();
-			for (int j = 0; j <= timeslots.length - 1; j++) {
-				if (timeslots[j].split(":").length < 3) {
-					timeslots[j] = timeslots[j].substring(0);
+		if(!tableList.isEmpty()) {
+			for (int i = 0; i < tableList.size(); i++) {
+				Table table_value = tableList.get(i);
+				String[] timeslots = table_value.getTimeslots();
+				for (int j = 0; j <= timeslots.length - 1; j++) {
+					if (timeslots[j].split(":").length < 3) {
+						timeslots[j] = timeslots[j].substring(0);
 
-				} else {
-					timeslots[j] = "";
+					} else {
+						timeslots[j] = "";
+					}
+					timeslots = Arrays.stream(timeslots)
+							.filter(s -> s != null && s.length() > 0)
+							.toArray(String[]::new);
+
+					table_value.setTimeslots(timeslots);
 				}
-				timeslots = Arrays.stream(timeslots)
-						.filter(s -> s != null && s.length() > 0)
-						.toArray(String[]::new);
-
-				table_value.setTimeslots(timeslots);
 			}
 		}
 
@@ -145,28 +152,32 @@ public class Table implements Serializable {
 	 */
 	public static boolean setAvailableTable(List<Table> tableList,String slot,int times,String userId,Table table){
 
-		for (int i = 0; i <tableList.size(); i++) {
-			boolean flag = false;
-			Table table_value = tableList.get(i);
-			if(table_value.isBooked()!=true) {
-				if (table.getNumbers() <= table_value.numbers) {
-					String[] timeslots = table_value.getTimeslots();
-					for (int j = 0; j <= timeslots.length - 1; j++) {
-						if (timeslots[j].equals(slot)) {
-							table_value.setBooked(true);
-							timeslots[j] += ":" + userId;
-							flag = true;
-							times--;
-						} else if (flag && times != 0) {
-							timeslots[j] += ":" + userId;
-							times--;
-							if (times == 0) flag = false;
+		if(!tableList.isEmpty()) {
+			for (int i = 0; i < tableList.size(); i++) {
+				boolean flag = false;
+				Table table_value = tableList.get(i);
+				if (table_value.isBooked() != true) {
+					if (table.getNumbers() <= table_value.numbers) {
+						String[] timeslots = table_value.getTimeslots();
+						for (int j = 0; j <= timeslots.length - 1; j++) {
+							if (timeslots[j].equals(slot)) {
+								table_value.setBooked(true);
+								timeslots[j] += ":" + userId;
+								flag = true;
+								times--;
+							} else if (flag && times != 0) {
+								timeslots[j] += ":" + userId;
+								times--;
+								if (times == 0) flag = false;
+							}
 						}
+						break;
 					}
-					break;
 				}
 			}
+			return true;
+		}else{
+			return false;
 		}
-		return true;
 	}
 }
