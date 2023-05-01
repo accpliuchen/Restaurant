@@ -1,6 +1,7 @@
 package com.example.domain;
 
 import com.google.gson.annotations.Expose;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
@@ -96,7 +97,7 @@ public class Table implements Serializable {
 	 * @param tableList
 	 * @return
 	 */
-	public static List getBookedTimeSlots(List<Table> tableList){
+	public static synchronized List getBookedTimeSlots(List<Table> tableList){
 
 		if(!tableList.isEmpty()) {
 			for (int i = 0; i < tableList.size(); i++) {
@@ -127,7 +128,7 @@ public class Table implements Serializable {
 	 * @param table
 	 * @return
 	 */
-	public static  boolean checkAvailableTable(List<Table> tableList,Table table){
+	public static synchronized boolean checkAvailableTable(List<Table> tableList,Table table){
 
 		if(!tableList.isEmpty()) {
 			for (int i = 0; i < tableList.size(); i++) {
@@ -150,7 +151,8 @@ public class Table implements Serializable {
 	 * @param table
 	 * @return
 	 */
-	public static boolean setAvailableTable(List<Table> tableList,String slot,int times,String userId,Table table){
+	@Transactional
+	public static synchronized boolean setAvailableTable(List<Table> tableList,String slot,int times,String userId,Table table){
 
 		if(!tableList.isEmpty()) {
 			for (int i = 0; i < tableList.size(); i++) {
