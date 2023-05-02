@@ -33,9 +33,11 @@ public class ReservationController {
     }
 
     @RequestMapping(value = "/getAvailableSlots", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<String> getAvailableSlots() {
+    public ResponseEntity<String> getAvailableSlots(){
+        Table table=new Table();
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(tableList);
+        List result=table.getAvailableTimeSlots(tableList);
+        String json = gson.toJson(result);
         return new ResponseEntity(json, HttpStatus.OK);
     }
 
