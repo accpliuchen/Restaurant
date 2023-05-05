@@ -1,6 +1,8 @@
 package com.example.domain;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
+import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Table implements Serializable {
 
@@ -78,11 +82,14 @@ public class Table implements Serializable {
     }
 
     public static void main(String args[]) {
+
     }
 
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public static synchronized List getBookedTimeSlots(List<Table> tableList) {
+
+        List<Table> clonedList = new ArrayList<Table>();
 
         if (!tableList.isEmpty()) {
             for (int i = 0; i < tableList.size(); i++) {
@@ -116,11 +123,13 @@ public class Table implements Serializable {
                         .filter(s -> s != null && s.length() > 0)
                         .toArray(String[]::new);
 
-                table_value.setTimeslots(timeslots);
+                newTable_Value.setTimeslots(timeslots);
+
+                clonedList.add(newTable_Value);
             }
         }
 
-        return tableList;
+        return clonedList;
     }
 
     /**
@@ -146,7 +155,6 @@ public class Table implements Serializable {
                     timeslotsArray[j] = table_value.getTimeslots()[j];
                 }
                 newTable_Value.setTimeslots(timeslotsArray);
-
 
                 String[] timeslots = newTable_Value.getTimeslots();
                 for (int j = 0; j <= timeslots.length - 1; j++) {
@@ -193,26 +201,6 @@ public class Table implements Serializable {
         return false;
     }
 
-    public static synchronized boolean checkAvailableTableTimes(Table table,String slot,int times) {
-            String[] timeslots = table.getTimeslots();
-            boolean flag = false;
-            for (int j = 0; j <= timeslots.length - 1; j++) {
-                  if (timeslots[j].equals(slot)){
-                      flag=true;
-                  }
-                  if(flag) {
-                      if(timeslots[j].split(":").length==3 && times!=0){
-                          return false;
-                      }
-                  }
-                  if(times==0) return true;
-                times--;
-            }
-
-            return true;
-
-    }
-
     /**
      * *
      *
@@ -232,8 +220,6 @@ public class Table implements Serializable {
                 Table table_value = tableList.get(i);
                     if (table.getNumbers() <= table_value.numbers) {
 
-                        if(checkAvailableTableTimes(table_value,slot,times)){
-
                         String[] timeslots = table_value.getTimeslots();
                         for (int j = 0; j <= timeslots.length - 1; j++) {
                             if (timeslots[j].equals(slot) && timeslots[j].split(":").length==2) {
@@ -247,7 +233,6 @@ public class Table implements Serializable {
                                 if (times == 0) flag = false;
                             }
                         }
-                        }else{ return false;}
                         break;
                     }
             }
