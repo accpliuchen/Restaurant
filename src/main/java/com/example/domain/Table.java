@@ -86,7 +86,12 @@ public class Table implements Serializable {
     }
 
 
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    /**
+     * *
+     *
+     * @param tableList
+     * @return
+     */
     public static synchronized List getBookedTimeSlots(List<Table> tableList) {
 
         List<Table> clonedList = new ArrayList<Table>();
@@ -138,7 +143,7 @@ public class Table implements Serializable {
      * @param tableList
      * @return
      */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+
     public static synchronized List getAvailableTimeSlots(List<Table> tableList) {
         List<Table> clonedList = new ArrayList<Table>();
 
@@ -187,7 +192,6 @@ public class Table implements Serializable {
      * @param table
      * @return
      */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public static synchronized boolean checkAvailableTable(List<Table> tableList, Table table) {
 
         if (!tableList.isEmpty()) {
@@ -199,6 +203,37 @@ public class Table implements Serializable {
             }
         }
         return false;
+    }
+
+    /**
+     * *
+     *
+     * @param table
+     * @param slot
+     * @param times
+     * @return
+     */
+    public static synchronized boolean checkAvailableTableTimes(Table table, String slot, int times) {
+        String[] timeslots = table.getTimeslots();
+        boolean flag = false;
+        for (int j = 0; j <= timeslots.length - 1; j++) {
+
+            if (timeslots[j].equals(slot) || (timeslots[j].split(":")[0] + ":" + timeslots[j].split(":")[1]).equals(slot)) {
+                flag = true;
+            }
+            if (flag) {
+                if (timeslots[j].split(":").length == 3 && times != 0) {
+                    return false;
+                }
+
+                times--;
+            }
+            if (times == 0) return true;
+
+        }
+
+        return true;
+
     }
 
     /**
@@ -218,11 +253,12 @@ public class Table implements Serializable {
             for (int i = 0; i < tableList.size(); i++) {
                 boolean flag = false;
                 Table table_value = tableList.get(i);
-                    if (table.getNumbers() <= table_value.numbers) {
-
+                if (table.getNumbers() <= table_value.numbers) {
+                    //checked existed booked
+                    if (checkAvailableTableTimes(table_value, slot, times)) {
                         String[] timeslots = table_value.getTimeslots();
                         for (int j = 0; j <= timeslots.length - 1; j++) {
-                            if (timeslots[j].equals(slot) && timeslots[j].split(":").length==2) {
+                            if (timeslots[j].equals(slot) && timeslots[j].split(":").length == 2) {
 
                                 timeslots[j] += ":" + userId;
                                 flag = true;
@@ -233,8 +269,12 @@ public class Table implements Serializable {
                                 if (times == 0) flag = false;
                             }
                         }
-                        break;
+
+                    } else {
+                        return false;
                     }
+                    break;
+                }
             }
             return true;
         } else {
