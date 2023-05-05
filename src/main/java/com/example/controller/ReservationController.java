@@ -58,12 +58,12 @@ public class ReservationController {
         table.setNumbers(numbers);
         boolean result=table.checkAvailableTable(tableList,table);
 
-        if(result){
+        if(result && table.checkTime(slot)){
             int dur=duration/quarter;
             boolean isAvailable=table.setAvailableTable(tableList,slot,dur ,userId,table);
             return new ResponseEntity(isAvailable, HttpStatus.OK);
         }
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity(false, HttpStatus.OK);
     }
 
 }

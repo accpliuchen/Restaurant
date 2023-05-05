@@ -185,6 +185,14 @@ public class Table implements Serializable {
         return clonedList;
     }
 
+    public static synchronized boolean checkTime(String slot) {
+         int time=Integer.parseInt(slot.split(":")[0]);
+         if(time<9 || time>12){
+             return false;
+         }
+         return true;
+    }
+
     /**
      * *
      *
