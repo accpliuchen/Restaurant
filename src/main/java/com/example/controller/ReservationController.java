@@ -66,4 +66,18 @@ public class ReservationController {
         return new ResponseEntity(false, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/addTable", method = { RequestMethod.GET, RequestMethod.POST })
+    public ResponseEntity<String> addTable(@RequestParam int tableId,@RequestParam int numbers) {
+        Table table=new Table();
+        table.setNumbers(numbers);
+        table.setTableId(tableId);
+
+        boolean result=table.checkDuplicateTables(tableList,table);
+
+        if(result){
+            boolean isApproved=table.addTables(tableList,table);
+            return new ResponseEntity(isApproved, HttpStatus.OK);
+        }
+        return new ResponseEntity(false, HttpStatus.OK);
+    }
 }

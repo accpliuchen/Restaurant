@@ -82,7 +82,23 @@ public class Table implements Serializable {
     }
 
     public static void main(String args[]) {
+        List<Table> tableList = new ArrayList<Table>();
 
+        Table table = new Table();
+        tableList = table.init();
+
+        Table table_demo;
+        table_demo = new Table();
+        table_demo.setTableId(8);
+        table_demo.setNumbers(9);
+
+        try {
+             //System.out.println(checkDuplicateTables(tableList,table_demo));
+            System.out.println(addTables(tableList,table_demo));
+            System.out.println("===");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -242,6 +258,29 @@ public class Table implements Serializable {
 
         return true;
 
+    }
+
+    /**
+     * * 
+     * @param tableList
+     * @param table
+     * @return
+     */
+    public static synchronized boolean checkDuplicateTables(List<Table> tableList, Table table){
+
+        for (Table tables : tableList) 
+        {
+           if(tables.getTableId()==table.getTableId()){
+            return false;
+           }
+        }
+
+        return true;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public static synchronized boolean addTables(List<Table> tableList, Table table){
+        return tableList.add(table);
     }
 
     /**
