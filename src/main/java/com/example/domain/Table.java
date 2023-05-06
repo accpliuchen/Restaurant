@@ -82,23 +82,7 @@ public class Table implements Serializable {
     }
 
     public static void main(String args[]) {
-        List<Table> tableList = new ArrayList<Table>();
-
-        Table table = new Table();
-        tableList = table.init();
-
-        Table table_demo;
-        table_demo = new Table();
-        table_demo.setTableId(8);
-        table_demo.setNumbers(9);
-
-        try {
-             //System.out.println(checkDuplicateTables(tableList,table_demo));
-            System.out.println(addTables(tableList,table_demo));
-            System.out.println("===");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+      
     }
 
 
