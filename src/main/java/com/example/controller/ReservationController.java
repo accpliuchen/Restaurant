@@ -53,9 +53,10 @@ public class ReservationController {
 
 
     @RequestMapping(value = "/bookRequest", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<String> bookRequest(@RequestParam String userId,@RequestParam int numbers,@RequestParam String slot,@RequestParam int duration) {
+    public ResponseEntity<String> bookRequest(@RequestParam int tableId,@RequestParam String userId,@RequestParam int numbers,@RequestParam String slot,@RequestParam int duration) {
         Table table=new Table();
         table.setNumbers(numbers);
+        table.setTableId(tableId);
         boolean result=table.checkAvailableTable(tableList,table);
 
         if(result && table.checkTime(slot)){

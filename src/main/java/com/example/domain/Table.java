@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class Table implements Serializable {
 
     @Expose(serialize = true, deserialize = false)
-    private int numbers;
+    private int tableId;
 
     @Expose(serialize = true, deserialize = false)
-    private int tableId;
+    private int numbers;
 
     @Expose(serialize = true, deserialize = false)
     private String[] timeslots = new String[]{"9:00am", "9:15am", "9:30am", "9:45am", "10:00am", "10:15am", "10:30am", "10:45am", "11:00am", "11:15am", "11:30am", "11:45am", "12:00pm"};
@@ -57,7 +57,7 @@ public class Table implements Serializable {
 
         Table table_one = new Table();
         table_one.setTableId(1);
-        table_one.setNumbers(1);
+        table_one.setNumbers(2);
         tableList.add(table_one);
 
         Table table_two = new Table();
@@ -82,7 +82,7 @@ public class Table implements Serializable {
     }
 
     public static void main(String args[]) {
-      
+        
     }
 
 
@@ -205,7 +205,7 @@ public class Table implements Serializable {
         if (!tableList.isEmpty()) {
             for (int i = 0; i < tableList.size(); i++) {
                 Table table_value = tableList.get(i);
-                if (table_value.numbers >= table.getNumbers()) {
+                if (table_value.numbers >= table.getNumbers() && table.getTableId()==table_value.getTableId()) {
                     return true;
                 }
             }
@@ -284,7 +284,7 @@ public class Table implements Serializable {
             for (int i = 0; i < tableList.size(); i++) {
                 boolean flag = false;
                 Table table_value = tableList.get(i);
-                if (table.getNumbers() <= table_value.numbers) {
+                if (table.getNumbers() <= table_value.numbers && table.getTableId()==table_value.getTableId()) {
                     //checked existed booked
                     if (checkAvailableTableTimes(table_value, slot, times)) {
                         String[] timeslots = table_value.getTimeslots();
